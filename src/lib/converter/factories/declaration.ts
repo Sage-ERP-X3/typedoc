@@ -44,14 +44,12 @@ export function createDeclaration(context: Context, node: ts.Declaration, kind: 
             name = node.localSymbol.name;
         } else if (node.symbol) {
             const valueDeclaration = node.symbol.valueDeclaration;
-            const firstChild = valueDeclaration
-                ? valueDeclaration.getChildAt(0, valueDeclaration.getSourceFile())
-                : null;
-            if (firstChild && firstChild.kind === ts.SyntaxKind.ComputedPropertyName) {
-                // insert raw name for property name
-                name = firstChild.getText(firstChild.getSourceFile());
+            const computedChild = valueDeclaration &&
+                valueDeclaration.getChildren().find(child => child.kind === ts.SyntaxKind.ComputedPropertyName);
+            if (computedChild) {
+                name = computedChild.getText(computedChild.getSourceFile());
             } else {
-            name = node.symbol.name;
+                name = node.symbol.name;
             }
         } else {
             return;
