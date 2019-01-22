@@ -43,7 +43,16 @@ export function createDeclaration(context: Context, node: ts.Declaration, kind: 
         if (node.localSymbol) {
             name = node.localSymbol.name;
         } else if (node.symbol) {
+            const valueDeclaration = node.symbol.valueDeclaration;
+            const firstChild = valueDeclaration
+                ? valueDeclaration.getChildAt(0, valueDeclaration.getSourceFile())
+                : null;
+            if (firstChild && firstChild.kind === ts.SyntaxKind.ComputedPropertyName) {
+                // insert raw name for property name
+                name = firstChild.getText(firstChild.getSourceFile());
+            } else {
             name = node.symbol.name;
+            }
         } else {
             return;
         }
