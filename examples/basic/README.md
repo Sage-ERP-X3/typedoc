@@ -26,3 +26,22 @@ $ examples --out path/to/documentation/ path/to/example/project/
 
 * `--example <project>`<br>
   Example explanation.
+
+
+## Example with Cyrillic
+
+### Пример API
+
+> Combined Latin and Cyrillic text
+
+### Только кириллица
+
+> Only Cyrillic text
+
+## Repeated Heading
+
+This is used to check the generated id. First instance.
+
+## Repeated Heading
+
+This is used to check the generated id. Second instance.

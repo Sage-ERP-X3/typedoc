@@ -1,5 +1,4 @@
 import * as ts from 'typescript';
-import * as _ts from '../../ts-internal';
 
 import { ReferenceType } from '../../models/index';
 import { Component, ConverterTypeComponent, TypeNodeConverter } from '../components';
@@ -34,15 +33,14 @@ export class AliasConverter extends ConverterTypeComponent implements TypeNodeCo
         }
 
         const checker = context.checker;
-        let symbolName = checker.getFullyQualifiedName(type.symbol).split('.');
+        const fqn = checker.getFullyQualifiedName(type.symbol);
+
+        let symbolName = fqn.replace(/".*"\./, '').split('.');
         if (!symbolName.length) {
             return false;
         }
-        if (symbolName[0].substr(0, 1) === '"') {
-            symbolName.shift();
-        }
 
-        let nodeName = _ts.getTextOfNode(node.typeName).split('.');
+        let nodeName = node.typeName.getText().split('.');
         if (!nodeName.length) {
             return false;
         }
@@ -71,7 +69,7 @@ export class AliasConverter extends ConverterTypeComponent implements TypeNodeCo
      * @returns  A type reference pointing to the type alias definition.
      */
     convertNode(context: Context, node: ts.TypeReferenceNode): ReferenceType {
-        const name = _ts.getTextOfNode(node.typeName);
+        const name = node.typeName.getText();
         const result = new ReferenceType(name, ReferenceType.SYMBOL_ID_RESOLVE_BY_NAME);
 
         if (node.typeArguments) {

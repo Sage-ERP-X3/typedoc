@@ -2,9 +2,9 @@ sudo: false
 language: node_js
 
 node_js:
-  - 6
+  - 8
   - 10
-
+  - 12
 
 before_install:
  - npm install --global npm@
@@ -17,5 +17,5 @@ before_install: >
   fi
 
 script:
- - npm test
+ - npm run build_and_test
  - npm run lint
