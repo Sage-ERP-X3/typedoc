@@ -104,7 +104,17 @@ export function getRawComment(node: ts.Node): string | undefined {
         let comment: ts.CommentRange;
         if (node.kind === ts.SyntaxKind.SourceFile) {
             if (comments.length === 1) {
-                return;
+                /* add hack here to allow plugin typedoc-plugin-external-module-name
+                 * to work since getRawComment do not work anymore
+                 * if node is sourcefile with only one comment that is a @module tag
+                 * do not ignore it
+                 */
+                comment = comments[0];
+                let rawComment = sourceFile.text.substring(comment.pos, comment.end);
+                let match = /@module\s+([\w\u4e00-\u9fa5\.\-_/@"]+)/.exec(rawComment);
+                if (!match) {
+                    return;
+                }
             }
             comment = comments[0];
         } else {
