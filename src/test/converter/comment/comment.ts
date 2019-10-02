@@ -36,4 +36,10 @@ export class CommentedClass {
    * @ignore
    */
   ignoredprop: string;
+
+
+  /**
+   * @internal
+   */
+  internalprop: string;
 }

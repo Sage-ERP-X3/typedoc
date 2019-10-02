@@ -23,14 +23,15 @@ function compareDirectories(a, b) {
     Assert.deepEqual(aFiles, bFiles, `Generated files differ. between "${ a }" and "${ b }"`);
 
     const gitHubRegExp = /https:\/\/github.com\/[A-Za-z0-9\-]+\/typedoc\/blob\/[^\/]*\/examples/g;
+    const sageRegExp = /@sage\/typedoc/g;
     aFiles.forEach(function (file) {
         const aSrc = FS.readFileSync(Path.join(a, file), {encoding: 'utf-8'})
             .replace('\r', '')
             .replace(gitHubRegExp, '%GITHUB%');
         const bSrc = FS.readFileSync(Path.join(b, file), {encoding: 'utf-8'})
             .replace('\r', '')
-            .replace(gitHubRegExp, '%GITHUB%');
-
+            .replace(gitHubRegExp, '%GITHUB%')
+            .replace(sageRegExp, 'typedoc');
         if (aSrc !== bSrc) {
             const err: any = new Error(`File contents of "${file}" differ.`);
             err.expected = aSrc;

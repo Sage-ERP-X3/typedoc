@@ -9,6 +9,8 @@ import { Component, ConverterComponent } from '../components';
 import { parseComment, getRawComment } from '../factories/comment';
 import { Converter } from '../converter';
 import { Context } from '../context';
+import { Option } from '../../utils';
+import { ParameterType } from '../../utils/options/declaration';
 
 /**
  * Structure used by [[ContainerCommentHandler]] to store discovered module comments.
@@ -36,6 +38,12 @@ interface ModuleComment {
  */
 @Component({name: 'comment'})
 export class CommentPlugin extends ConverterComponent {
+    @Option({
+        name: 'hideInternal',
+        help: 'Do not generate documentation for @internal comments tags',
+        type: ParameterType.Boolean
+    })
+    hideInternal!: boolean;
     /**
      * List of discovered module comments.
      * Defined in this.onBegin
@@ -110,7 +118,7 @@ export class CommentPlugin extends ConverterComponent {
             CommentPlugin.removeTags(comment, 'event');
         }
 
-        if (comment.hasTag('hidden') || comment.hasTag('ignore')) {
+        if (comment.hasTag('hidden') || comment.hasTag('ignore') || (comment.hasTag('internal') && this.hideInternal)) {
             if (!this.hidden) {
                 this.hidden = [];
             }
