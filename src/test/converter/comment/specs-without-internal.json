@@ -38,34 +38,6 @@
           },
           "children": [
               {
-                  "id": 6,
-                  "name": "internalprop",
-                  "kind": 1024,
-                  "kindString": "Property",
-                  "flags": {
-                      "isExported": true
-                  },
-                  "comment": {
-                      "tags": [
-                          {
-                              "tag": "internal",
-                              "text": "\n"
-                          }
-                      ]
-                  },
-                  "sources": [
-                      {
-                          "fileName": "comment.ts",
-                          "line": 44,
-                          "character": 14
-                      }
-                  ],
-                  "type": {
-                      "type": "intrinsic",
-                      "name": "string"
-                  }
-              },
-              {
               "id": 3,
               "name": "prop",
               "kind": 1024,
@@ -94,7 +66,6 @@
               "title": "Properties",
               "kind": 1024,
               "children": [
-                6,
                 3
               ]
             }

@@ -1,7 +1,7 @@
 {
-  "name": "typedoc",
+  "name": "@sage/typedoc",
   "description": "Create api documentation for TypeScript projects.",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "homepage": "https://typedoc.org",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -15,7 +15,10 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/TypeStrong/TypeDoc.git"
+    "url": "git://github.com/Sage-ERP-X3/typedoc.git"
+  },
+  "publishConfig": {
+    "registry": "https://repository.sagex3.com:8443/repository/x3-group-repository"
   },
   "bugs": {
     "url": "https://github.com/TypeStrong/TypeDoc/issues"

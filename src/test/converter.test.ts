@@ -90,6 +90,8 @@ describe('Converter', function() {
             it('matches specs', function() {
                 const specs = JSON.parse(FS.readFileSync(Path.join(path, 'specs.json')).toString());
                 let data = JSON.stringify(result!.toObject(), null, '  ');
+                const sageRegExp = /@sage\/typedoc/g;
+                data = data.replace(sageRegExp, 'typedoc');
                 data = data.split(normalizePath(base)).join('%BASE%');
 
                 compareReflections(JSON.parse(data), specs);
@@ -128,6 +130,8 @@ describe('Converter with categorizeByGroup=false', function() {
         it('matches specs', function() {
             const specs = JSON.parse(FS.readFileSync(Path.join(categoryDir, 'specs-with-lump-categories.json')).toString());
             let data = JSON.stringify(result!.toObject(), null, '  ');
+            const sageRegExp = /@sage\/typedoc/g;
+            data = data.replace(sageRegExp, 'typedoc');
             data = data.split(normalizePath(base)).join('%BASE%');
 
             compareReflections(JSON.parse(data), specs);
@@ -145,6 +149,8 @@ describe('Converter with categorizeByGroup=false', function() {
         it('matches specs', function() {
             const specs = JSON.parse(FS.readFileSync(Path.join(classDir, 'specs.json')).toString());
             let data = JSON.stringify(result!.toObject(), null, '  ');
+            const sageRegExp = /@sage\/typedoc/g;
+            data = data.replace(sageRegExp, 'typedoc');
             data = data.split(normalizePath(base)).join('%BASE%');
 
             compareReflections(JSON.parse(data), specs);
@@ -182,6 +188,8 @@ describe('Converter with excludeNotExported=true', function() {
         it('matches specs', function() {
             const specs = JSON.parse(FS.readFileSync(Path.join(exportWithLocalDir, 'specs-without-exported.json')).toString());
             let data = JSON.stringify(result!.toObject(), null, '  ');
+            const sageRegExp = /@sage\/typedoc/g;
+            data = data.replace(sageRegExp, 'typedoc');
             data = data.split(normalizePath(base)).join('%BASE%');
 
             compareReflections(JSON.parse(data), specs);
@@ -198,10 +206,50 @@ describe('Converter with excludeNotExported=true', function() {
         it('matches specs', function() {
             const specs = JSON.parse(FS.readFileSync(Path.join(classDir, 'specs-without-exported.json')).toString());
             let data = JSON.stringify(result!.toObject(), null, '  ');
+            const sageRegExp = /@sage\/typedoc/g;
+            data = data.replace(sageRegExp, 'typedoc');
             data = data.split(normalizePath(base)).join('%BASE%');
 
             compareReflections(JSON.parse(data), specs);
         });
     });
 
+});
+
+describe('Converter with hideInternal=true', function() {
+    const base = Path.join(__dirname, 'converter');
+    const commentDir = Path.join(base, 'comment');
+    let app: Application;
+
+    before('constructs', function() {
+        app = new Application({
+            mode:   'Modules',
+            logger: 'none',
+            target: 'ES5',
+            module: 'CommonJS',
+            experimentalDecorators: true,
+            hideInternal: true,
+            jsx: 'react'
+        });
+    });
+
+    let result: ProjectReflection | undefined;
+
+    describe('comment', () => {
+        it('converts fixtures', function() {
+            resetReflectionID();
+            result = app.convert(app.expandInputFiles([commentDir]));
+            Assert(result instanceof ProjectReflection, 'No reflection returned');
+        });
+
+        it('matches specs', function() {
+            const specs = JSON.parse(FS.readFileSync(Path.join(commentDir, 'specs-without-internal.json')).toString());
+            let data = JSON.stringify(result!.toObject(), null, '  ');
+            const sageRegExp = /@sage\/typedoc/g;
+            data = data.replace(sageRegExp, 'typedoc');
+            data = data.split(normalizePath(base)).join('%BASE%');
+
+            compareReflections(JSON.parse(data), specs);
+        });
+    });
 });

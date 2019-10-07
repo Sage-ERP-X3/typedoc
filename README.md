@@ -71,6 +71,8 @@ For a complete list of the command line arguments run `typedoc --help` or read [
   Prevent private members from being included in the generated documentation.
 * `--excludeProtected`<br>
   Prevent protected members from being included in the generated documentation.
+* `--hideInternal`<br>
+  Prevent internal members from being included in the generated documentation.
 
 #### TypeScript compiler
 * `--module <commonjs, amd, system or umd>`<br>
